@@ -15,6 +15,11 @@ export class VisitorFormComponent implements OnInit{
       next: (res) => console.log("Location data: ", res),
       error: (err) => console.log("Error: ", err),
     })
+
+    this.api.get('SelectedDate/dates').subscribe({
+      next: (res) => console.log("Selected Dates data: ", res),
+      error: (err) => console.log("Error data: ", err)
+    })
   }
 
 }

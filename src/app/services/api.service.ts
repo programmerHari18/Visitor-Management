@@ -13,9 +13,17 @@ export class ApiService {
 
   private handleError(error: HttpErrorResponse){
     let errorMsg = 'Something went wrong';
-    if(error.error?.message)  errorMsg = error.error.message;
-    else if(error.status) errorMsg = `Error ${error.status}: ${error.statusText}`;
-
+    if (Array.isArray(error.error) && error.error[0]?.Field && error.error[0]?.Description) {
+      errorMsg = error.error
+        .map((err: any) => `${err.Field}: ${err.Description.join(', ')}`)
+        .join('\n');
+    } 
+    else if (error.error?.message) {
+      errorMsg = error.error.message;
+    } 
+    else if (error.status) {
+      errorMsg = `Error ${error.status}: ${error.statusText}`;
+    }
     this.snackBar.open(errorMsg, 'Close', {duration: 3000});
     return throwError(() => new Error(errorMsg));
   }
